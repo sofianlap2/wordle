@@ -53,7 +53,7 @@ function startGame() {
         board.push(row)
     }
 
-    document.addEventListener('keydown', startTyping)
+    document.addEventListener('keyup', startTyping)
     let typingNum = 0
 
     async function startTyping(e) {
