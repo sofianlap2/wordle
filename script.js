@@ -33,9 +33,12 @@ function startGame() {
     let firstWord = []
     let row = 0
     let rowCols = 0
+    let gamewon = false
 
     const boardContainer = document.querySelector('#board-container')
     const msg = document.querySelector('#show-msg')
+    const answer = document.querySelector('#answer')
+    
     boardContainer.classList.add('container')
     boardContainer.style.width = `${cols * 62}px`;
 
@@ -54,6 +57,8 @@ function startGame() {
     let typingNum = 0
 
     async function startTyping(e) {
+        if(gamewon) return;
+        let numOfCorrect = 0
         if(typingNum < 0) return
         if(e.key === 'Backspace' && typingNum <= rows && typingNum > 0) {
             board[row][typingNum - 1].innerText = ''
@@ -80,11 +85,16 @@ function startGame() {
                 for(let i = 0; i < firstWordText.length; i++) {
                     if(firstWordText[i] === choosenWord[i]) {
                         board[row][i].classList.add('green')
+                        numOfCorrect++
                     } else if(choosenWord.includes(firstWordText[i])) {
                         board[row][i].classList.add('orange')
                     } else {
                         board[row][i].classList.add('black')
                     }
+                }
+                if(numOfCorrect === 5) {
+                    gamewon = true
+                    alert('Congratulations u have guessed the word')
                 }
                 row++
                 rowCols += 5
@@ -94,6 +104,8 @@ function startGame() {
             } else {
                 msg.innerText = 'word not found'
             }
+
+            if(row === 5 && !gamewon) answer.innerText = 'The chosen word is ' + choosenWord
         }
     }
 }
